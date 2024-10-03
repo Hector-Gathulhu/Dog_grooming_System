@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+
+  db:
+    image: mysql:latest
+    container_name: grooming_system
+    restart: always
+    volumes:
+      - ./db/sql/create_schema.sql:/docker-entrypoint-initdb.d/create_schema.sql
+
+    environment:
+      - MYSQL_ROOT_PASSWORD=12345678
+      - MYSQL_DATABASE=dog_grooming
+      - MYSQL_USER=root1
+      - MYSQL_PASSWORD=db5113
+
+    ports:
+      - "3307:3306"
