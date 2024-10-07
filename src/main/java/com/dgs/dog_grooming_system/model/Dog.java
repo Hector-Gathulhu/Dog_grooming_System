@@ -1,5 +1,6 @@
 package com.dgs.dog_grooming_system.model;
 
+import com.dgs.dog_grooming_system.enums.BathType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,5 +19,6 @@ public class Dog {
     private String name;
     @Column(length=10)
     private String ownerPhone;
-    private String bathType;
+    @Enumerated(EnumType.STRING)
+    private BathType bathType;
 }
