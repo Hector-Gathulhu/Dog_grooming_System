@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,16 +24,15 @@ public class DogController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<Dog> createDogAppointment(@RequestBody @Valid DogAppointmentDto dogAppointmentDto) {
-
-            Dog dogAppointment = dogService.createAppointment(
-                    dogAppointmentDto.name(),
-                    dogAppointmentDto.ownerPhone(),
-                    dogAppointmentDto.bathType());
-
+    public ResponseEntity<?> createDogAppointment(@RequestBody @Valid DogAppointmentDto dogAppointmentDto) {
+        try {
+            Dog dogAppointment = dogService.createAppointment(dogAppointmentDto);
             return ResponseEntity.ok(dogAppointment);
-
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
+
 
     @GetMapping("/appointments")
     public ResponseEntity<List<Dog>> getAppointments() {
@@ -70,7 +70,7 @@ public class DogController {
         try {
             Dog dogAppointment = dogService.deleteAppointment(id);
             return ResponseEntity.ok("Appointment deleted successfully!");
-        }catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
 

@@ -1,8 +1,10 @@
 package com.dgs.dog_grooming_system.service;
+import com.dgs.dog_grooming_system.dto.DogAppointmentDto;
 import com.dgs.dog_grooming_system.enums.BathType;
 import com.dgs.dog_grooming_system.model.Dog;
 import com.dgs.dog_grooming_system.repository.DogRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.aspectj.weaver.ast.Instanceof;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +18,12 @@ public class DogService {
     private DogRepository dogRepository;
 
 
-    public Dog createAppointment(String name, String ownerPhone, BathType bathType) {
+    public Dog createAppointment(DogAppointmentDto dogAppointmentDto) {
+
             Dog dogAppointment = new Dog();
-            dogAppointment.setName(name);
-            dogAppointment.setOwnerPhone(ownerPhone);
-            dogAppointment.setBathType(bathType);
+            dogAppointment.setName(dogAppointmentDto.name());
+            dogAppointment.setOwnerPhone(dogAppointmentDto.ownerPhone());
+            dogAppointment.setBathType(dogAppointmentDto.bathType());
             return dogRepository.save(dogAppointment);
     }
 
@@ -47,6 +50,5 @@ public class DogService {
 
         return dogAppointment;
     }
-
 
 }
