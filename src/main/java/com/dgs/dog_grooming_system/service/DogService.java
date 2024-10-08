@@ -1,10 +1,8 @@
 package com.dgs.dog_grooming_system.service;
 import com.dgs.dog_grooming_system.dto.DogAppointmentDto;
-import com.dgs.dog_grooming_system.enums.BathType;
 import com.dgs.dog_grooming_system.model.Dog;
 import com.dgs.dog_grooming_system.repository.DogRepository;
 import jakarta.persistence.EntityNotFoundException;
-import org.aspectj.weaver.ast.Instanceof;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,15 +29,16 @@ public class DogService {
         return dogRepository.findAll();
     }
 
-    public Optional<Dog> getAppointmentByName(String name){
+    public Optional<List<Dog>> getAppointmentByName(String name){
         return dogRepository.findByNameContaining(name);
     }
 
-    public Dog updateAppointment(Long id,String name, String ownerPhone, BathType bathType ){
+    public Dog updateAppointment(Long id, DogAppointmentDto dogUpdateDto){
         Dog dogAppointment = dogRepository.findById(id).orElseThrow(RuntimeException::new);
-        dogAppointment.setName(name);
-        dogAppointment.setOwnerPhone(ownerPhone);
-        dogAppointment.setBathType(bathType);
+
+        dogAppointment.setName(dogUpdateDto.name());
+        dogAppointment.setOwnerPhone(dogUpdateDto.ownerPhone());
+        dogAppointment.setBathType(dogUpdateDto.bathType());
 
         return dogRepository.save(dogAppointment);
     }

@@ -41,8 +41,8 @@ public class DogController {
     }
 
     @GetMapping("/search/{name}")
-    public ResponseEntity<Dog> getAppointmentByName(@PathVariable String name) {
-        Optional<Dog> dogAppointment = dogService.getAppointmentByName(name);
+    public ResponseEntity<List<Dog>> getAppointmentByName(@PathVariable String name) {
+        Optional<List<Dog>> dogAppointment = dogService.getAppointmentByName(name);
         if (dogAppointment.isPresent()) {
             return ResponseEntity.ok(dogAppointment.get());
         } else {
@@ -51,13 +51,9 @@ public class DogController {
     }
 
     @PutMapping("{id}/update")
-    public ResponseEntity<Dog> updateDogAppointment(@RequestBody @Valid DogUpdateDto dogUpdateDto) {
+    public ResponseEntity<Dog> updateDogAppointment(@PathVariable Long id, @RequestBody @Valid DogAppointmentDto dogUpdateDto) {
 
-        Dog dogAppointment = dogService.updateAppointment(
-                dogUpdateDto.id(),
-                dogUpdateDto.name(),
-                dogUpdateDto.ownerPhone(),
-                dogUpdateDto.bathType());
+        Dog dogAppointment = dogService.updateAppointment(id, dogUpdateDto);
 
         return ResponseEntity.ok(dogAppointment);
     }
