@@ -1,7 +1,6 @@
 package com.dgs.dog_grooming_system.controller;
 
 import com.dgs.dog_grooming_system.dto.DogAppointmentDto;
-import com.dgs.dog_grooming_system.dto.DogUpdateDto;
 import com.dgs.dog_grooming_system.model.Dog;
 import com.dgs.dog_grooming_system.service.DogService;
 import jakarta.persistence.EntityNotFoundException;
@@ -31,7 +30,6 @@ public class DogController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
-
 
     @GetMapping("/appointments")
     public ResponseEntity<List<Dog>> getAppointments() {
