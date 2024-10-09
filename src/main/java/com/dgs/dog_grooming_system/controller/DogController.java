@@ -1,7 +1,6 @@
 package com.dgs.dog_grooming_system.controller;
 
 import com.dgs.dog_grooming_system.dto.DogAppointmentDto;
-import com.dgs.dog_grooming_system.dto.DogUpdateDto;
 import com.dgs.dog_grooming_system.model.Dog;
 import com.dgs.dog_grooming_system.service.DogService;
 import jakarta.persistence.EntityNotFoundException;
@@ -32,7 +31,6 @@ public class DogController {
         }
     }
 
-
     @GetMapping("/appointments")
     public ResponseEntity<List<Dog>> getAppointments() {
         List<Dog> getDogsAppointments = dogService.retriveAppointment();
@@ -41,8 +39,8 @@ public class DogController {
     }
 
     @GetMapping("/search/{name}")
-    public ResponseEntity<Dog> getAppointmentByName(@PathVariable String name) {
-        Optional<Dog> dogAppointment = dogService.getAppointmentByName(name);
+    public ResponseEntity<List<Dog>> getAppointmentByName(@PathVariable String name) {
+        Optional<List<Dog>> dogAppointment = dogService.getAppointmentByName(name);
         if (dogAppointment.isPresent()) {
             return ResponseEntity.ok(dogAppointment.get());
         } else {
@@ -51,15 +49,14 @@ public class DogController {
     }
 
     @PutMapping("{id}/update")
-    public ResponseEntity<Dog> updateDogAppointment(@RequestBody @Valid DogUpdateDto dogUpdateDto) {
+    public ResponseEntity<?> updateDogAppointment(@PathVariable Long id, @RequestBody @Valid DogAppointmentDto dogUpdateDto) {
 
-        Dog dogAppointment = dogService.updateAppointment(
-                dogUpdateDto.id(),
-                dogUpdateDto.name(),
-                dogUpdateDto.ownerPhone(),
-                dogUpdateDto.bathType());
-
-        return ResponseEntity.ok(dogAppointment);
+        try {
+            Dog dogAppointment = dogService.updateAppointment(id, dogUpdateDto);
+            return ResponseEntity.ok(dogAppointment);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
 

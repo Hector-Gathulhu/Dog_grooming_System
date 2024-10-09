@@ -1,12 +1,13 @@
 package com.dgs.dog_grooming_system.model;
 
 import com.dgs.dog_grooming_system.enums.BathType;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 
 @Entity(name = "appointment")
 @NoArgsConstructor
@@ -22,4 +23,10 @@ public class Dog {
     private String ownerPhone;
     @Enumerated(EnumType.STRING)
     private BathType bathType;
+
+    //Add ownerID
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
+    @JsonIgnoreProperties({"name", "phone", "email", "dogAppointments"})
+    private Owner owner;
 }

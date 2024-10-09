@@ -16,5 +16,9 @@ public record DogAppointmentDto(
         @Pattern(regexp = "\\d{10}")
         String ownerPhone,
         @NotNull(message = "Bath type must be in UPPERCASE")
-        BathType bathType) {
+        BathType bathType,
+        @NotNull(message = "Owner ID is required")
+        Long ownerId
+
+) {
 }

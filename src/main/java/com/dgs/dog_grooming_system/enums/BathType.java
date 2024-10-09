@@ -1,8 +1,6 @@
 package com.dgs.dog_grooming_system.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import org.springframework.http.converter.HttpMessageNotReadableException;
-
 
 public enum BathType {
     BASIC,
