@@ -49,11 +49,14 @@ public class DogController {
     }
 
     @PutMapping("{id}/update")
-    public ResponseEntity<Dog> updateDogAppointment(@PathVariable Long id, @RequestBody @Valid DogAppointmentDto dogUpdateDto) {
+    public ResponseEntity<?> updateDogAppointment(@PathVariable Long id, @RequestBody @Valid DogAppointmentDto dogUpdateDto) {
 
-        Dog dogAppointment = dogService.updateAppointment(id, dogUpdateDto);
-
-        return ResponseEntity.ok(dogAppointment);
+        try {
+            Dog dogAppointment = dogService.updateAppointment(id, dogUpdateDto);
+            return ResponseEntity.ok(dogAppointment);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
 

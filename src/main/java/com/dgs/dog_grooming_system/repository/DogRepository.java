@@ -16,5 +16,4 @@ public interface DogRepository extends JpaRepository<Dog,Long> {
     @Query("SELECT d FROM appointment d WHERE LOWER(d.name) LIKE LOWER(CONCAT('%', :name, '%'))")
     Optional<List<Dog>> findByNameContaining(String name);
 
-    Optional<Dog> findByOwnerId(Long id);
 }

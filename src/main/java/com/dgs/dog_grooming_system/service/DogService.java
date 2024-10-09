@@ -1,7 +1,6 @@
 package com.dgs.dog_grooming_system.service;
 
 import com.dgs.dog_grooming_system.dto.DogAppointmentDto;
-import com.dgs.dog_grooming_system.dto.OwnerDto;
 import com.dgs.dog_grooming_system.model.Dog;
 import com.dgs.dog_grooming_system.model.Owner;
 import com.dgs.dog_grooming_system.repository.DogRepository;
@@ -27,6 +26,10 @@ public class DogService {
         Owner owner = ownerRepository.findById(dogAppointmentDto.ownerId())
                 .orElseThrow(() -> new IllegalArgumentException("Owner not found"));
 
+        if (!owner.getPhone().equals(dogAppointmentDto.ownerPhone())) {
+            throw new IllegalArgumentException("The phone provied doesn't match with the owner's information!");
+        }
+
         Dog dogAppointment = new Dog();
         dogAppointment.setName(dogAppointmentDto.name());
         dogAppointment.setOwnerPhone(dogAppointmentDto.ownerPhone());
@@ -45,10 +48,17 @@ public class DogService {
 
     public Dog updateAppointment(Long id, DogAppointmentDto dogUpdateDto) {
         Dog dogAppointment = dogRepository.findById(id).orElseThrow(RuntimeException::new);
+        Owner owner = ownerRepository.findById(dogUpdateDto.ownerId())
+                .orElseThrow(() -> new IllegalArgumentException("Owner not found"));
+
+        if (!owner.getPhone().equals(dogUpdateDto.ownerPhone())) {
+            throw new IllegalArgumentException("The phone provied doesn't match with the owner's information!");
+        }
 
         dogAppointment.setName(dogUpdateDto.name());
         dogAppointment.setOwnerPhone(dogUpdateDto.ownerPhone());
         dogAppointment.setBathType(dogUpdateDto.bathType());
+        dogAppointment.setOwner(dogAppointment.getOwner());
 
         return dogRepository.save(dogAppointment);
     }
@@ -56,7 +66,6 @@ public class DogService {
     public Dog deleteAppointment(Long id) {
         Dog dogAppointment = dogRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("The appointment doesn't exist, ID: " + id));
         dogRepository.deleteById(dogAppointment.getId());
-
 
         return dogAppointment;
     }
