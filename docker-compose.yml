@@ -6,8 +6,6 @@ services:
     image: mysql:8.0
     container_name: grooming_system
     restart: always
-    volumes:
-      - ./db/sql/create_schema.sql:/docker-entrypoint-initdb.d/create_schema.sql
 
     environment:
       - MYSQL_ROOT_PASSWORD=12345678

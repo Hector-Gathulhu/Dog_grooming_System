@@ -1,5 +1,6 @@
 package com.dgs.dog_grooming_system.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,6 +26,9 @@ public class Owner {
             cascade = CascadeType.ALL,
             fetch = FetchType.EAGER,
             mappedBy = "owner")
-    private List<Dog> dogAppointments;
+    private List<DogAppointment> dogAppointments;
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("owner")
+    private List<Dog> dogs;
 
 }

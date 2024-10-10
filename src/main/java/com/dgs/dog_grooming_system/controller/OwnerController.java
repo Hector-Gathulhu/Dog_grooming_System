@@ -33,8 +33,8 @@ public class OwnerController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Owner> getOwnerId(@PathVariable Long id) {
-        Owner getOwnersid = ownerService.getOwnersId(id);
-        return ResponseEntity.ok(getOwnersid);
+        Owner getOwnersId = ownerService.getOwnersId(id);
+        return ResponseEntity.ok(getOwnersId);
     }
 
     @PutMapping("/{id}")
